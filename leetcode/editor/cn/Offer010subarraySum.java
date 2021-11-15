@@ -41,9 +41,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 //2021-11-10 20:42:15
-public class Offer010{
+public class Offer010subarraySum {
     public static void main(String[] args) {
-        Solution solution = new Offer010().new Solution();
+        Solution solution = new Offer010subarraySum().new Solution();
         // TO TEST
         int[] nums = {0,0};
         int k = 0;

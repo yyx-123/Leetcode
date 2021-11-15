@@ -36,13 +36,10 @@ package editor.cn;
 // 👍 16 👎 0
 
 
-import java.util.Arrays;
-import java.util.HashMap;
-
 //2021-11-15 11:57:53
-public class Offer014{
+public class Offer014checkInclusion {
     public static void main(String[] args) {
-        Solution solution = new Offer014().new Solution();
+        Solution solution = new Offer014checkInclusion().new Solution();
         // TO TEST
         System.out.println(solution.checkInclusion("abc","babc"));
     }

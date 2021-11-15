@@ -55,9 +55,9 @@ package editor.cn;
 	
 
 //2021-11-15 11:38:19
-public class Offer008{
+public class Offer008minSubArrayLen {
     public static void main(String[] args) {
-        Solution solution = new Offer008().new Solution();
+        Solution solution = new Offer008minSubArrayLen().new Solution();
         // TO TEST
         int[] nums = {1,4,4};
         System.out.println(solution.minSubArrayLen(20, nums));

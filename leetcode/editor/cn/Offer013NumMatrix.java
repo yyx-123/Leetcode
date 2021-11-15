@@ -58,9 +58,9 @@ package editor.cn;
 	
 
 //2021-11-13 15:23:41
-public class Offer013{
+public class Offer013NumMatrix {
     public static void main(String[] args) {
-        Offer013 offer013 = new Offer013();
+        Offer013NumMatrix offer013NumMatrix = new Offer013NumMatrix();
         // TO TEST
         int[][] matrix = {{3,0,1,4,2},
                           {5,6,3,2,1},
@@ -69,7 +69,7 @@ public class Offer013{
                           {1,0,3,0,5},
         };
 
-        NumMatrix numMatrix = offer013.new NumMatrix(matrix);
+        NumMatrix numMatrix = offer013NumMatrix.new NumMatrix(matrix);
         System.out.println(numMatrix.sumRegion(2,1,4,3));
         System.out.println(numMatrix.sumRegion(1,1,2,2));
         System.out.println(numMatrix.sumRegion(1,2,2,4));

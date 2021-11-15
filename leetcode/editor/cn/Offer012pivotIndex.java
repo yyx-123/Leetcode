@@ -55,9 +55,9 @@ package editor.cn;
 	
 
 //2021-11-12 15:30:13
-public class Offer012{
+public class Offer012pivotIndex {
     public static void main(String[] args) {
-        Solution solution = new Offer012().new Solution();
+        Solution solution = new Offer012pivotIndex().new Solution();
         // TO TEST
         int[] nums = {2,1,-1};
         System.out.println(solution.pivotIndex(nums));

@@ -34,12 +34,11 @@ package editor.cn;
 
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
 //2021-11-11 22:59:43
-public class Offer011{
+public class Offer011findMaxLength {
     public static void main(String[] args) {
-        Solution solution = new Offer011().new Solution();
+        Solution solution = new Offer011findMaxLength().new Solution();
         // TO TEST
         // int[] nums = {0,1,1,0,1,1,1,0,1,0};
         int[] nums = {0,0,1};
