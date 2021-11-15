@@ -76,7 +76,11 @@ public class Offer013{
     }
     
     //leetcode submit region begin(Prohibit modification and deletion)
-    class NumMatrix {
+
+    /**
+     * 计算每一行的前缀和（本质还是多次计算一维前缀和）
+     */
+    /*class NumMatrix {
         private int rowCnt;
         private int colCnt;
         private int[][] rowSum;
@@ -104,6 +108,76 @@ public class Offer013{
                 }
             }
             return sum;
+        }
+    }*/
+
+    /**
+     * 二维前缀和。在实现的过程中还是用到了每一行的前缀和。在初始化的时候比较慢不过查询时比一维的前缀和快。受限于初始化时二维前缀和的计算速度，总体而言还是比较慢的
+     */
+    /*class NumMatrix {
+        private int rowCnt;
+        private int colCnt;
+        private int[][] rowSum; // 每一行的前缀和
+        private int[][] Sum;    // 每一个元素到[0,0]的二位前缀和
+
+        public NumMatrix(int[][] matrix) {
+            rowCnt = matrix.length;
+            colCnt = matrix[0].length;
+            rowSum = new int[rowCnt][colCnt];
+            Sum = new int[rowCnt][colCnt];
+
+            // 先计算每行的前缀和
+            for (int i = 0; i < rowCnt; i++) {
+                rowSum[i][0] = matrix[i][0];
+                for (int j = 1; j < colCnt; j++) {
+                    rowSum[i][j] = rowSum[i][j - 1] + matrix[i][j];
+                }
+            }
+
+            // 再计算[i,j]到[0,0]的矩阵块的和S[i,j]
+            for (int i = 0; i < rowCnt; i++) {
+                for (int j = 0; j < colCnt; j++) {
+                    for (int k = 0; k <= i; k++) {
+                        Sum[i][j] += rowSum[k][j];
+                    }
+                }
+            }
+        }
+
+        public int sumRegion(int row1, int col1, int row2, int col2) {
+            if (row1 == 0 && col1 == 0) return Sum[row2][col2];
+            else if (row1 == 0) return Sum[row2][col2] - Sum[row2][col1 - 1];
+            else if (col1 == 0) return Sum[row2][col2] - Sum[row1 - 1][col2];
+            else return Sum[row2][col2] - Sum[row1 - 1][col2] - Sum[row2][col1 - 1] + Sum[row1 - 1][col1 - 1];
+        }
+    }*/
+
+    /**
+     * 二维前缀和。脱离了单行前缀和的限制，用二维前缀和来递推计算二维前缀和，初始化速度快。且二维前缀和的特性也使得查询速度较快。
+     */
+    class NumMatrix {
+        private int rowCnt;
+        private int colCnt;
+        private int[][] Sum;    // 每一个元素到[0,0]的二位前缀和
+
+        public NumMatrix(int[][] matrix) {
+            rowCnt = matrix.length;
+            colCnt = matrix[0].length;
+            Sum = new int[rowCnt + 1][colCnt + 1];
+
+            // 再计算[i,j]到[0,0]的矩阵块的和S[i,j]
+            for (int i = 1; i <= rowCnt; i++) {
+                for (int j = 1; j <= colCnt; j++) {
+                    Sum[i][j] = Sum[i - 1][j] + Sum[i][j - 1] - Sum[i - 1][j - 1] + matrix[i - 1][j - 1];
+                }
+            }
+        }
+
+        public int sumRegion(int row1, int col1, int row2, int col2) {
+            if (row1 == 0 && col1 == 0) return Sum[row2 + 1][col2 + 1];
+            else if (row1 == 0) return Sum[row2 + 1][col2 + 1] - Sum[row2 + 1][col1];
+            else if (col1 == 0) return Sum[row2 + 1][col2 + 1] - Sum[row1][col2 + 1];
+            else return Sum[row2 + 1][col2 + 1] - Sum[row1][col2 + 1] - Sum[row2 + 1][col1] + Sum[row1][col1];
         }
     }
 
