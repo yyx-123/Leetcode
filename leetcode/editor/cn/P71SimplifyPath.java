@@ -60,51 +60,97 @@ package editor.cn;
 // 👍 388 👎 0
 
 
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Stack;
 
 //2022-01-06 13:43:29
 public class P71SimplifyPath{
     public static void main(String[] args) {
         Solution solution = new P71SimplifyPath().new Solution();
         // TO TEST
+        System.out.println(solution.simplifyPath("/../"));
     }
     
     //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+    class Solution1 {
         public String simplifyPath(String path) {
-            Deque<String> dq = new LinkedList<>();
-            int i = 0, len = path.length();
-
-            while (i < len){
-                // 剔除最开始的斜杠（如果有连续的斜杠）
-                while (i < len && path.charAt(i) == '/') i++;
-
-                if (i == len) break;
-                if (path.charAt(i) != '.'){
-                    int j = i;
-                    while (j < len && path.charAt(j) != '/') j++;
-                    dq.offerLast(path.substring(i, j));
-                    i = j;
+            // 确保路径以/结尾
+            path = path + "/";
+            StringBuilder sb = new StringBuilder();
+            int len = path.length();
+            // 去除重复的斜杠
+            for (int i = 0; i < len; i++) {
+                if (path.charAt(i) == '/'){
+                    int j = i + 1;
+                    while (j < len && path.charAt(j) == '/') j++;
+                    sb.append('/');
+                    i = j - 1;
                 }else{
-                    // './'为当前目录，直接忽略
-                    if (i < len - 1 && path.charAt(i + 1) == '/') i += 2;
-                    // '../'为上一层目录，在栈中弹出一层目录（如果栈非空）
-                    else if (i < len - 2 && path.charAt(i = 1) == '.' && path.charAt(i + 2) == '.'){
-                        if (dq.size() > 0) dq.removeLast();
-                        i += 3;
-                    }
-                    // 其它情况，...及以上视为一个文件
-                    else{
-                        int j = i;
-                        while (j < len && path.charAt(j) != '/') j++;
-                        dq.offerLast(path.substring(i, j));
-                        i = j;
-                    }
+                    sb.append(path.charAt(i));
                 }
             }
 
-            return "";
+            path = sb.toString();
+            Stack<String> dirs = new Stack<>();
+            int i = 0;
+            while (i < path.length() - 1){
+                int j = i + 1;
+
+                while (j < path.length() && path.charAt(j) != '/') j++;
+
+                String dir = path.substring(i + 1, j);
+                if (dir.equals("..")){
+                    if (!dirs.isEmpty())  dirs.pop();
+                }else if (dir.equals(".")) {
+                }
+                else{
+                    dirs.push(dir);
+                }
+                i = j;
+            }
+
+            Stack<String> newStack = new Stack<>();
+            while (!dirs.isEmpty()){
+                newStack.push(dirs.pop());
+            }
+            sb = new StringBuilder("/");
+            while (!newStack.isEmpty()){
+                sb.append(newStack.pop());
+                if (newStack.size() > 0) sb.append("/");
+            }
+            return sb.toString();
+        }
+    }
+
+    class Solution {
+        public String simplifyPath(String path) {
+            if (path.charAt(path.length() - 1) != '/') path += "/";
+
+            char[] chars = path.toCharArray();
+            int len = chars.length, i = 0;
+            Deque<String> dq = new LinkedList<>();
+            while (i < len - 1){
+                int j = i + 1;
+
+                while (j < len && chars[j] != '/') j++;
+
+                String dir = String.valueOf(chars, i + 1, j - i - 1);
+                if (dir.equals("..")){
+                    if (!dq.isEmpty()) dq.pollLast();
+                }else if (dir.equals(".")) {
+                }else{
+                    if (dir.length() > 0) dq.addLast(dir);
+                }
+                i = j;
+            }
+            StringBuilder sb = new StringBuilder("/");
+            while (dq.size() > 0){
+                sb.append(dq.pollFirst());
+                if (dq.size() > 0) sb.append("/");
+            }
+            return sb.toString();
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
