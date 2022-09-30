@@ -35,8 +35,6 @@ package editor.cn;
 // 👍 1595 👎 0
 
 
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
-
 //2022-01-21 15:17:36
 public class P55JumpGame{
     public static void main(String[] args) {

@@ -6,14 +6,14 @@ public class Sorting {
 
     static class SelectSort{
         public int[] sort(int[] nums){
-            for (int i = 0; i < nums.length - 1; i++) {
+            int n = nums.length;
+            for (int i = 0; i < n - 1; i++) {
                 int minIdx = i;
-                for (int j = i + 1; j < nums.length; j++) {
+                for (int j = i + 1; j < n; j++) {
                     if (nums[j] < nums[minIdx]){
                         minIdx = j;
                     }
                 }
-
                 int tmp = nums[i];
                 nums[i] = nums[minIdx];
                 nums[minIdx] = tmp;
@@ -24,7 +24,9 @@ public class Sorting {
 
     static class InsertSort{
         public int[] sort(int[] nums){
-            for (int i = 1; i < nums.length; i++) {
+            int n = nums.length;
+
+            for (int i = 1; i < n; i++) {
                 for (int j = i; j > 0; j--) {
                     if (nums[j] < nums[j - 1]){
                         int tmp = nums[j];
@@ -63,19 +65,13 @@ public class Sorting {
         }
 
         private void innerSort(int[] nums, int left, int right){
+            if (left >= right) return;
 
-            if (left >= right || left < 0 || right >= nums.length) return;
-
-            int pivot = nums[left];
-            int i = left, j = right;
+            int pivot = nums[left], i = left, j = right;
             while (i < j){
-                while (i < j && nums[j] >= pivot){
-                    j--;
-                }
+                while (i < j && nums[j] >= pivot) j--;
                 nums[i] = nums[j];
-                while (i < j && nums[i] <= pivot){
-                    i++;
-                }
+                while (i < j && nums[i] <= pivot) i++;
                 nums[j] = nums[i];
             }
             nums[i] = pivot;
@@ -86,46 +82,46 @@ public class Sorting {
     }
 
     static class MergeSort{
-        int[] tmp;
+
+        private int[] tmp;
 
         public int[] sort(int[] nums){
             tmp = new int[nums.length];
             innerSort(nums, 0, nums.length - 1);
-
             return nums;
         }
 
-        private void merge(int[] nums, int start1, int start2, int end){
-            int i = start1, j = start2;
-            for (int k = start1; k <= end; k++) {
-                if (i >= start2){
-                    tmp[k] = nums[j];
-                    j++;
-                }else if (j > end){
-                    tmp[k] = nums[i];
-                    i++;
+        private void innerSort(int[] nums, int left, int right){
+
+            if (left >= right) return;
+
+            int mid = (left + right) / 2;
+
+            innerSort(nums, left, mid);
+            innerSort(nums, mid + 1, right);
+            merge(nums, left, mid, right);
+        }
+
+        private void merge(int[] nums, int left, int mid, int right){
+            int i = left, j = mid + 1;
+
+            for (int k = left; k <= right; k++) {
+                if (i > mid){
+                    tmp[k] = nums[j++];
+                }else if (j > right){
+                    tmp[k] = nums[i++];
                 }else{
-                    if (nums[i] <= nums[j]){
-                        tmp[k] = nums[i];
-                        i++;
+                    if (nums[i] < nums[j]){
+                        tmp[k] = nums[i++];
                     }else{
-                        tmp[k] = nums[j];
-                        j++;
+                        tmp[k] = nums[j++];
                     }
                 }
             }
-            for (int k = start1; k <= end; k++) {
+
+            for (int k = left; k <= right; k++) {
                 nums[k] = tmp[k];
             }
-        }
-
-        private void innerSort(int[] nums, int left, int right){
-            if (left >= right) return;
-
-            int mid = left + (right - left) / 2;
-            innerSort(nums, left, mid);
-            innerSort(nums, mid + 1, right);
-            merge(nums, left, mid + 1, right);
         }
     }
 
